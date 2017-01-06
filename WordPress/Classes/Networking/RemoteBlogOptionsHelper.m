@@ -1,5 +1,8 @@
 #import "RemoteBlogOptionsHelper.h"
 
+static NSString * const RemoteBlogOptionsDefaultCategoryKey = @"default_category";
+static NSString * const RemoteBlogOptionsDefaultPostFormatKey = @"default_post_format";
+
 @implementation RemoteBlogOptionsHelper
 
 // Formats blog options retrieved from REST queries
@@ -24,6 +27,8 @@
                                           @"timezone",
                                           @"gmt_offset",
                                           @"allowed_file_types",
+                                          RemoteBlogOptionsDefaultCategoryKey,
+                                          RemoteBlogOptionsDefaultPostFormatKey
                                           ];
 
         for (NSString *key in optionsDirectMapKeys) {
@@ -39,6 +44,16 @@
     }];
 
     return [NSDictionary dictionaryWithDictionary:valueOptions ];
+}
+
++ (NSNumber *)defaultCategoryIDFromOptions:(NSDictionary *)options
+{
+    return [[options dictionaryForKey:RemoteBlogOptionsDefaultCategoryKey] numberForKey:@"value"];
+}
+
++ (NSString *)defaultPostFormatFromOptions:(NSDictionary *)options
+{
+    return [[options dictionaryForKey:RemoteBlogOptionsDefaultPostFormatKey] stringForKey:@"value"];
 }
 
 @end

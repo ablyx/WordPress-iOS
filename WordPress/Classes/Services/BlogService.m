@@ -21,6 +21,7 @@
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 #import "PostType.h"
+#import "RemoteBlogOptionsHelper.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -634,6 +635,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     BlogSettings *settings = blog.settings;
     settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
     settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
+
+    // Both the defaultCategoryID and postFormat can show up in the options dictionary of a blog.
+    // Update the 'Top Level' Settings if needed.
+    NSNumber *defaultCategoryID = [RemoteBlogOptionsHelper defaultCategoryIDFromOptions:remoteBlog.options];
+    if (defaultCategoryID) {
+        settings.defaultCategoryID = defaultCategoryID;
+    }
+    NSString *defaultPostFormat = [RemoteBlogOptionsHelper defaultPostFormatFromOptions:remoteBlog.options];
+    if (defaultPostFormat.length) {
+        settings.defaultPostFormat = defaultPostFormat;
+    }
 }
 
 /**
