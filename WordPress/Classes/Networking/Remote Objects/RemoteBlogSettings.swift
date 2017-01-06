@@ -159,6 +159,21 @@ open class RemoteBlogSettings: NSObject {
 
     // MARK: - Helpers
 
+    /// Detect whether the backend sent '0' as a number, OR a string value. Ref. Issue #4187 for the default post format
+    ///
+    class func remotePostFormatValueIsUnsetDefaultPostFormatValue(_ value: AnyObject?) -> Bool {
+        guard let value = value else {
+            return false
+        }
+        if let number = value as? NSNumber, number.isEqual(to: NSNumber(value:0)) {
+            return true
+        }
+        if let string = value as? String, string == "0" {
+            return true
+        }
+        return false
+    }
+
     /// Computed property, meant to help conversion from Remote / String-Based values, into their Integer counterparts
     ///
     var commentsSortOrderAscending: Bool {
@@ -169,8 +184,6 @@ open class RemoteBlogSettings: NSObject {
             return commentsSortOrder == RemoteBlogSettings.AscendingStringValue
         }
     }
-
-
 
     // MARK: - Private
 

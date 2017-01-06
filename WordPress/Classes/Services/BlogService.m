@@ -636,16 +636,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
     settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
 
-    // Both the defaultCategoryID and postFormat can show up in the options dictionary of a blog.
-    // Update the 'Top Level' Settings if needed.
-    NSNumber *defaultCategoryID = [RemoteBlogOptionsHelper defaultCategoryIDFromOptions:remoteBlog.options];
-    if (defaultCategoryID) {
-        settings.defaultCategoryID = defaultCategoryID;
-    }
-    NSString *defaultPostFormat = [RemoteBlogOptionsHelper defaultPostFormatFromOptions:remoteBlog.options];
-    if (defaultPostFormat.length) {
-        settings.defaultPostFormat = defaultPostFormat;
-    }
+    // Both the defaultCategoryID and postFormat show up in the options dictionary of a blog.
+    settings.defaultCategoryID = [RemoteBlogOptionsHelper defaultCategoryIDFromOptions:remoteBlog.options];
+    settings.defaultPostFormat = [RemoteBlogOptionsHelper defaultPostFormatFromOptions:remoteBlog.options];
 }
 
 /**

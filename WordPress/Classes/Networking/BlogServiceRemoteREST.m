@@ -282,15 +282,12 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     // Writing
     settings.defaultCategoryID = [rawSettings numberForKey:RemoteBlogDefaultCategoryKey] ?: @(RemoteBlogUncategorizedCategory);
 
-    // Note: the backend might send '0' as a number, OR a string value. Ref. Issue #4187
-    if ([[rawSettings numberForKey:RemoteBlogDefaultPostFormatKey] isEqualToNumber:@(0)] ||
-        [[rawSettings stringForKey:RemoteBlogDefaultPostFormatKey] isEqualToString:@"0"])
-    {
+    if ([RemoteBlogSettings remotePostFormatValueIsUnsetDefaultPostFormatValue:[rawSettings objectForKey:RemoteBlogDefaultPostFormatKey]]) {
         settings.defaultPostFormat = RemoteBlogDefaultPostFormat;
     } else {
         settings.defaultPostFormat = [rawSettings stringForKey:RemoteBlogDefaultPostFormatKey];
     }
-    
+
     // Discussion
     settings.commentsAllowed = [rawSettings numberForKey:RemoteBlogCommentsAllowedKey];
     settings.commentsBlacklistKeys = [rawSettings stringForKey:RemoteBlogCommentsBlacklistKeys];

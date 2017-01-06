@@ -1,4 +1,5 @@
 #import "RemoteBlogOptionsHelper.h"
+#import "WordPress-Swift.h"
 
 static NSString * const RemoteBlogOptionsDefaultCategoryKey = @"default_category";
 static NSString * const RemoteBlogOptionsDefaultPostFormatKey = @"default_post_format";
@@ -53,7 +54,12 @@ static NSString * const RemoteBlogOptionsDefaultPostFormatKey = @"default_post_f
 
 + (NSString *)defaultPostFormatFromOptions:(NSDictionary *)options
 {
-    return [[options dictionaryForKey:RemoteBlogOptionsDefaultPostFormatKey] stringForKey:@"value"];
+    NSDictionary *format = [options dictionaryForKey:RemoteBlogOptionsDefaultPostFormatKey];
+    if ([RemoteBlogSettings remotePostFormatValueIsUnsetDefaultPostFormatValue:[format objectForKey:@"value"]]) {
+        // return nil if the value is the unset default value, see RemoteBlogSettings.remotePostFormatIsUnsetDefaultPostFormatValue()
+        return nil;
+    }
+    return [format stringForKey:@"value"];
 }
 
 @end
